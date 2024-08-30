@@ -52,7 +52,8 @@ def login(request):
                                     'stu_email': email
                                 } 
                     form1=QueryForm(initial=initial_data)
-                    return render(request,'dashboard.html',{'data':data,'query':form1})
+                    data1 = StudentQuery.objects.filter(stu_email=email)
+                    return render(request,'dashboard.html',{'data':data,'query':form1,'data1':data1})
                 else:
                     msg = "Email & Password not matched"
                     return render(request,'login.html',{'form':form,'msg':msg})
@@ -93,5 +94,34 @@ def query(request):
                                 'stu_email': email
                             } 
                 form1=QueryForm(initial=initial_data)
-                
-                return render(request,'dashboard.html',{'data':data,'query':form1})
+                data1 = StudentQuery.objects.filter(stu_email=email)
+                return render(request,'dashboard.html',{'data':data,'query':form1,'data1':data1})
+
+def delete(request,pk):
+    # print(pk)
+    form = QueryForm()
+    if request.method=="POST":
+        user = StudentQuery.objects.get(id=pk)
+        name = user.stu_name
+        email = user.stu_email
+        user.delete()
+        initial_data = {
+                        'stu_name': name,
+                        'stu_email': email
+                    } 
+        form1=QueryForm(initial=initial_data)
+        data1 = StudentQuery.objects.filter(stu_email=email)
+        user1 = StudentModel.objects.get(stu_email=email)
+        name = user1.stu_name
+        email = user1.stu_email
+        contact = user1.stu_mobile
+        city = user1.stu_city
+        password = user1.stu_password
+        data = {
+                    'name':name,
+                    'email':email,
+                    'contact':contact,
+                    'city':city,
+                    'password':password
+                }
+        return render(request,'dashboard.html',{'data':data,'query':form1,'data1':data1})

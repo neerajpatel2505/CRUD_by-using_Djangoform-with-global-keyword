@@ -10,14 +10,20 @@
     <title>Document</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
-<body>
-        {{data.name}}<br>
-        {{data.city}}<br>
-        {{data.email}}<br>
-        {{data.contact}}<br>
-        {{data.password}}<br>
-
-        <a href="{% url 'home' %}">Logout</a>
+<body class="">
+    <div class="container-fluid bg-light">
+        {% comment %} {{data.name}}
+        {{data.city}}
+        {{data.contact}}
+        {{data.password}} {% endcomment %}
+        <div class="text-end">
+            <h4 class="fst-italic text-lowercase">{{data.name}} </h4>
+            <h4 class="fst-italic text-lowercase">{{data.email}} </h4>
+         </div>
+        <div class="text-end">
+           <h5 class="fst-italic text-uppercase"> <a href="{% url 'home' %}" >Logout</a></h5>
+        </div>
+        
         <div class="row">
             <div class="col-4">
                 <h3 class="text-center">-----Query Form-----</h3>
@@ -53,13 +59,13 @@
                         {% if data1 %}
                         {% for i in data1 %}
                             <tr>
-                                <td>{{i.id}}</td>
+                                <td>{{forloop.counter}}</td>
                                 <td>{{i.stu_name}}</td>
                                 <td>{{i.stu_email}}</td>
                                 <td>{{i.stu_query}}</td>
                                 <td><form action="{% url 'edit' pk=i.id %}" method="post">
                                     {% csrf_token %}
-                                        <button type="submit" class="btn btn-danger">Edit</button>
+                                        <button type="submit" class="btn btn-warning">Edit</button>
                                     </form>
                                 </td>
                                 <td><form action="{% url 'delete' pk=i.id %}" method="post">
@@ -70,10 +76,13 @@
                                 
                             </tr>
                         {% endfor %}
+                        {% else %}
+                        <h3 class="text-center text-primary">!!!!!!!! No-record found !!!!!!!!!! </h3>
                         {% endif %}
                     </table>
                 </div>
             
         </div> 
+    </div>
 </body>
 </html>
